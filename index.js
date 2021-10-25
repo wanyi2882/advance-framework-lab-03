@@ -23,8 +23,11 @@ app.use(
   })
 );
 
+// Require our own custom routers
+const landingRoutes = require('./routes/landing')
+
 async function main() {
-  
+  app.use('/', landingRoutes)
 }
 
 main();
