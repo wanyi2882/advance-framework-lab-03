@@ -23,11 +23,20 @@ app.use(
   })
 );
 
+// custom middleware goes here
+app.use(function(req,res,next){
+  //locals is the directionary you pass to the hbs file
+  res.locals.date = new Date();
+  next()
+})
+
 // Require our own custom routers
 const landingRoutes = require('./routes/landing')
+const productRoutes = require('./routes/products')
 
 async function main() {
   app.use('/', landingRoutes)
+  app.use('/products', productRoutes)
 }
 
 main();
