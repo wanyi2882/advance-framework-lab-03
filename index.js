@@ -3,6 +3,11 @@ const hbs = require("hbs");
 const wax = require("wax-on");
 require("dotenv").config();
 
+// for sessions and flash messages
+const session = require('express-session');
+const flash = require('connect-flash');
+const FileStore = require('session-file-store')(session);
+
 // create an instance of express app
 let app = express();
 
@@ -29,6 +34,26 @@ app.use(function(req,res,next){
   res.locals.date = new Date();
   next()
 })
+
+// set up sessions
+app.use(session({
+  store: new FileStore(),
+  secret: 'waPjjt7ZJyHN1uQsJJEWdjNifWpGnzFu', // randomkeygen
+  resave: false,
+  saveUninitialized: true
+}))
+
+// Set up flash messages
+app.use(flash())
+
+// Register Flash middleware
+app.use(function (req, res, next) {
+    res.locals.success_messages = req.flash("success_messages");
+    res.locals.error_messages = req.flash("error_messages");
+    next();
+});
+
+// every time: nodemon --ignore sessions
 
 // Require our own custom routers
 const landingRoutes = require('./routes/landing')

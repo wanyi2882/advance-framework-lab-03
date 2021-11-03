@@ -10,4 +10,7 @@ const Product = bookshelf.model('Product',{
     'tableName': 'posters'
 });
 
-module.exports = { Product }
+const User = bookshelf.model('User',{
+    tableName: 'users'
+})
+module.exports = { Product, User }
