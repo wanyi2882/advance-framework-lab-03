@@ -59,11 +59,10 @@ const createProductForm = () => {
         'stock': fields.string({
             required: true,
             errorAfterField: true,
-            value: 1,
             cssClasses: {
                 label: ['form-label mx-3 fw-bold']
             },
-            validators:[validators.integer(), validators.min(1)]
+            validators:[validators.integer(), validators.min(0)]
 
         }),
         'height': fields.string({
@@ -72,7 +71,7 @@ const createProductForm = () => {
             cssClasses: {
                 label: ['form-label mx-3 fw-bold']
             },
-            validators:[validators.integer(), validators.min(1)]
+            validators:[validators.integer(), validators.min(0)]
         }),
         'width': fields.string({
             required: true,
@@ -80,7 +79,7 @@ const createProductForm = () => {
             cssClasses: {
                 label: ['form-label mx-3 fw-bold']
             },
-            validators:[validators.integer(), validators.min(1)]
+            validators:[validators.integer(), validators.min(0)]
         })
     })
 };
