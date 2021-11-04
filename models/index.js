@@ -7,10 +7,30 @@ const bookshelf = require('../bookshelf')
 // second arg: settings in the form of an object
 
 const Product = bookshelf.model('Product',{
-    'tableName': 'posters'
+    'tableName': 'posters',
+    MediaProperty() {
+        return this.belongsTo('MediaProperty')
+    },
+    Tag() {
+        return this.belongsToMany('Tag');
+    }
 });
 
-const User = bookshelf.model('User',{
-    tableName: 'users'
+const MediaProperty = bookshelf.model('MediaProperty',{
+    'tableName': 'media_properties',
+    products(){
+        return this.hasMany('Product')
+    }
+});
+
+const Tag = bookshelf.model('Tag',{
+    'tableName': 'tags',
+    products(){
+        return this.belongsToMany('Product')
+    }
 })
-module.exports = { Product, User }
+
+const User = bookshelf.model('User',{
+    'tableName': 'users'
+})
+module.exports = { Product, MediaProperty, Tag, User }

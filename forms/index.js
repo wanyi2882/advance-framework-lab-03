@@ -3,6 +3,7 @@ const forms = require("forms");
 // create some shortcuts
 const fields = forms.fields;
 const validators = forms.validators;
+const widgets = forms.widgets;
 
 var bootstrapField = function (name, object) {
     if (!Array.isArray(object.widget.classes)) { object.widget.classes = []; }
@@ -24,7 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group mx-3 mb-2">' + label + widget + error + '</div>';
 };
 
-const createProductForm = () => {
+const createProductForm = (media_properties, tags) => {
     return forms.create({
         'title': fields.string({
             required: true,
@@ -80,6 +81,25 @@ const createProductForm = () => {
                 label: ['form-label mx-3 fw-bold']
             },
             validators:[validators.integer(), validators.min(0)]
+        }),
+        'media_property_id': fields.string({
+            label: 'Media Property',
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label mx-3 fw-bold']
+            },
+            widget: widgets.select(),
+            choices: media_properties
+        }),
+        'tags': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices:tags
         })
     })
 };

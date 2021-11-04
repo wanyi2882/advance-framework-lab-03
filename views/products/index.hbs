@@ -6,6 +6,8 @@
         <tr>
             <th style="border: 1px solid black;">ID</th>
             <th style="border: 1px solid black;">Title</th>
+            <th style="border: 1px solid black;">Media Property</th>
+            <th style="border: 1px solid black;">Tags</th>
             <th style="border: 1px solid black;">Cost (cents)</th>
             <th style="border: 1px solid black;">Date</th>
             <th style="border: 1px solid black;">Description</th>
@@ -20,12 +22,24 @@
         <tr style="border: 1px solid black;">
             <td style="border: 1px solid black;">{{this.id}}</td>
             <td style="border: 1px solid black;">{{this.title}}</td>
+            <td style="border: 1px solid black;">{{this.MediaProperty.name}}</td>
+            <td>
+                {{#each this.Tag}}
+                <span class="badge bg-secondary">
+                    {{this.name}}
+                </span>
+                {{/each}}
+            </td>
             <td style="border: 1px solid black;">{{this.cost}}</td>
             <td style="border: 1px solid black;">{{this.date}}</td>
             <td style="border: 1px solid black;">{{this.description}}</td>
             <td style="border: 1px solid black;">{{this.stock}}</td>
             <td style="border: 1px solid black;">{{this.height}}</td>
             <td style="border: 1px solid black;">{{this.width}}</td>
+            <td>
+                <a href="/products/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
+                <a href="/products/{{this.id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+            </td>
         </tr>
         {{/each}}
     </tbody>
