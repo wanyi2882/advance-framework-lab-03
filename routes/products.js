@@ -24,7 +24,10 @@ router.get('/add', async (req, res) => {
 
     const productForm = createProductForm(media_properties, allTags);
     res.render('products/add', {
-        'form': productForm.toHTML(bootstrapField)
+        'form': productForm.toHTML(bootstrapField),
+        'cloudinaryName': process.env.CLOUDINARY_NAME,
+        'cloudinaryApiKey': process.env.CLOUDINARY_API_KEY,
+        'cloudinaryUploadPreset': process.env.CLOUDINARY_UPLOAD_PRESET
     })
 });
 
@@ -55,7 +58,10 @@ router.post('/add', async (req, res) => {
         },
         'error': async (form) => {
             res.render('products/add', {
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapField),
+                'cloudinaryName': process.env.CLOUDINARY_NAME,
+                'cloudinaryApiKey': process.env.CLOUDINARY_API_KEY,
+                'cloudinaryUploadPreset': process.env.CLOUDINARY_UPLOAD_PRESET
             })
         }
     })
