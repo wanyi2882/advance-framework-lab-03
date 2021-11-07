@@ -64,7 +64,7 @@ const cloudinaryRoutes = require('./routes/cloudinary')
 async function main() {
   app.use('/', landingRoutes)
   app.use('/products', productRoutes)
-  app.use('./user', userRoutes)
+  app.use('/user', userRoutes)
   app.use('/cloudinary', cloudinaryRoutes);
 }
 

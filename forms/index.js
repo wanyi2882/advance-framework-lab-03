@@ -194,5 +194,26 @@ const createSignupForm = ()=>{
     })
 }
 
-module.exports = { createProductForm, createSearchForm, createSignupForm, bootstrapField };
+// create login form
+const createLoginForm = () => {
+    return forms.create({
+        'email': fields.string({
+            'required': true,
+            'errorAfterField': true,
+            'cssClasses': {
+                'label': ['form-label']
+            }
+        }),
+        'password': fields.string({
+            'required': true,
+            'errorAfterField': true,
+            'cssClasses': {
+                'label': ['form-label']
+            },
+            'widget': widgets.password()
+        })
+    })
+}
+
+module.exports = { createProductForm, createSearchForm, createSignupForm, createLoginForm, bootstrapField };
 
