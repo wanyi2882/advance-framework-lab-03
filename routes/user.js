@@ -1,17 +1,15 @@
-const express = require("express");
+const express = require('express');
+const { createSignupForm, bootstrapField } = require('../forms');
+const { User } = require('../models');
 const router = express.Router();
 
-// import in the User model
-const { User } = require('../models');
-
-const { createRegistrationForm, bootstrapField } = require('../forms');
 
 router.get('/register', (req,res)=>{
-    // display the registration form
-    const registerForm = createRegistrationForm();
-    res.render('users/register', {
-        'form': registerForm.toHTML(bootstrapField)
+    const signUpForm = createSignupForm();
+    res.render('users/register',{
+        signUpForm: signUpForm.toHTML(bootstrapField)
     })
-})
+});
+
 
 module.exports = router;

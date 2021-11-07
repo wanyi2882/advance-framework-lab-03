@@ -3,9 +3,67 @@
 {{#block 'content'}}
 <h1>Update Product: {{product.title}}</h1>
 <form method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
     {{{form}}}
-    <input type="submit" value="Update Product" class="btn btn-primary"/>
+    <div>
+        {{#if product.image_url}}
+        <img class="img-fluid" src="{{product.image_url}}" id="uploaded_image" style="display:block" />
+        {{else}}
+        <img src="" style="display:none" id="uploaded_image" />
+        {{/if}}
+    </div>
+    <div>
+        <a href="#" class="btn btn-primary" id="upload_widget">Upload</a>
+    </div>
+    <input type="submit" value="Update Product" class="btn btn-primary" />
 </form>
+{{/block}}
+
+{{#block 'js'}}
+{{!-- initialise cloudinary --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous"></script>
+
+<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+
+{{!-- get signature --}}
+<script>
+    function generateSignature(callback, params_to_sign) {
+        axios.get('/cloudinary/sign', {
+            params: {
+                params_to_sign
+            }
+        }).then(function (response) {
+            callback(response.data);
+        })
+    }
+
+    const processUpload = (error, result) => {
+        // check if no error and make sure we have result
+        // and result is successful
+        console.log(error);
+        console.log(result);
+        if (!error && result.event == "success") {
+            document.querySelector("#id_image_url").value = result.info.url;
+            document.querySelector('#uploaded_image').src = result.info.thumbnail_url;
+            document.querySelector('#uploaded_image').style = "display:block";
+        }
+    }
+
+    // create the widget
+    let widget = cloudinary.createUploadWidget({
+        'cloudName': "{{cloudinaryName}}",
+        'apiKey': "{{cloudinaryApiKey}}",
+        'uploadPreset': '{{cloudinaryPreset}}',
+        'uploadSignature': generateSignature,
+    }, processUpload);
+    document.querySelector('#upload_widget').addEventListener('click', function () {
+        widget.open();
+    }, false);
+</script>
+
+
 {{/block}}
 
 {{/extends}}

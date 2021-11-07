@@ -25,6 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group mx-3 mb-2">' + label + widget + error + '</div>';
 };
 
+// Create product Form
 const createProductForm = (media_properties, tags) => {
     return forms.create({
         'title': fields.string({
@@ -102,10 +103,96 @@ const createProductForm = (media_properties, tags) => {
             choices:tags
         }),
         'image_url':fields.string({
+            cssClasses: {
+                label: ['form-label mx-3 fw-bold']
+            },
             widget: widgets.hidden()
         })
     })
 };
+const createSearchForm = (categories, tags) => {
+    return forms.create({
+        'name': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'min_cost': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer()]
+        }),
+          'max_cost': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer()]
+        }),
+        'category_id': fields.string({
+            label: 'Category',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: categories
+        }),
+        'tags': fields.string({
+            required:false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: tags
+        }),
+    })
+};
 
-module.exports = { createProductForm, bootstrapField };
+// Create User Registration Form
+const createSignupForm = ()=>{
+    return forms.create({
+        'username': fields.string({
+            'required': true,
+            'errorAfterField': true,
+            'cssClasses': {
+                'label': ['form-label']
+            }
+        }),
+        'email': fields.string({
+            'required': true,
+            'errorAfterField': true,
+            'cssClasses': {
+                'label': ['form-label']
+            }
+        }),
+        'password': fields.string({
+            'required': true,
+            'errorAfterField': true,
+            'cssClasses': {
+                'label': ['form-label']
+            },
+            'widget': widgets.password()
+        }),
+        'confirm_password': fields.string({
+            'required': true,
+            'errorAfterField': true,
+            'cssClasses': {
+                'label':['form-label']
+            },
+            'widget': widgets.password(),
+            'validators': [validators.matchField('password')]
+        })
+    })
+}
+
+module.exports = { createProductForm, createSearchForm, createSignupForm, bootstrapField };
 
