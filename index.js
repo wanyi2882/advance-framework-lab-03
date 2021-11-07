@@ -41,7 +41,7 @@ app.use(function(req,res,next){
 // set up sessions
 app.use(session({
   store: new FileStore(),
-  secret: 'waPjjt7ZJyHN1uQsJJEWdjNifWpGnzFu', // randomkeygen
+  secret: process.env.SESSION_SECRET_KEY, // randomkeygen
   resave: false,
   saveUninitialized: true
 }))

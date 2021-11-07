@@ -36,7 +36,7 @@ router.post('/register', (req,res)=>{
             });
             await user.save();
             req.flash('success_messages', "You have been signed up successfully");
-            res.redirect('/users/login');
+            res.redirect('/user/login');
         }
     })
 })
