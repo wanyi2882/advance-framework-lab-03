@@ -110,52 +110,84 @@ const createProductForm = (media_properties, tags) => {
         })
     })
 };
-const createSearchForm = (categories, tags) => {
+
+const createSearchForm = (allCategories, allTags) => {
     return forms.create({
-        'name': fields.string({
-            required: false,
+        'name': fields.string({            
+            required: false, // optional to enter a search terms
             errorAfterField: true,
             cssClasses: {
-                label: ['form-label']
+                label:['form-label']
             }
         }),
         'min_cost': fields.string({
             required: false,
+            validators: [validators.integer(), validators.min(0)],
             errorAfterField: true,
             cssClasses: {
-                label: ['form-label']
-            },
-            'validators': [validators.integer()]
+                label:['form-label']
+            }       
         }),
-          'max_cost': fields.string({
+        'max_cost': fields.string({
+            required: false,
+            validators: [validators.integer(), validators.min(0)],
+            errorAfterField: true,
+            cssClasses: {
+                label:['form-label']
+            }       
+        }),
+        'min_width': fields.string({
+            required: false,
+            validators: [validators.integer(), validators.min(0)],
+            errorAfterField: true,
+            cssClasses: {
+                label:['form-label']
+            }       
+        }),
+        'max_width': fields.string({
+            required: false,
+            validators: [validators.integer(), validators.min(0)],
+            errorAfterField: true,
+            cssClasses: {
+                label:['form-label']
+            }       
+        }),
+        'min_height': fields.string({
+            required: false,
+            validators: [validators.integer(), validators.min(0)],
+            errorAfterField: true,
+            cssClasses: {
+                label:['form-label']
+            }       
+        }),
+        'max_height': fields.string({
+            required: false,
+            validators: [validators.integer(), validators.min(0)],
+            errorAfterField: true,
+            cssClasses: {
+                label:['form-label']
+            }       
+        }),
+        'category': fields.string({
             required: false,
             errorAfterField: true,
             cssClasses: {
-                label: ['form-label']
+                label:['form-label']
             },
-            'validators': [validators.integer()]
-        }),
-        'category_id': fields.string({
-            label: 'Category',
-            required: false,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            },
-            widget: widgets.select(),
-            choices: categories
+            choices: allCategories,
+            widget: widgets.select()     
         }),
         'tags': fields.string({
-            required:false,
+            required: false,
             errorAfterField: true,
             cssClasses: {
-                label: ['form-label']
+                label:['form-label']
             },
-            widget: widgets.multipleSelect(),
-            choices: tags
-        }),
+            choices: allTags,
+            widget: widgets.multipleSelect()
+        })
     })
-};
+}
 
 // Create User Registration Form
 const createSignupForm = ()=>{

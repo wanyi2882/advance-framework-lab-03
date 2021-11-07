@@ -33,6 +33,10 @@ router.get('/', async function (req, res) {
             let name = form.data.name;
             let min_cost = form.data.min_cost;
             let max_cost = form.data.max_cost;
+            let min_width = form.data.min_width;
+            let max_width = form.data.max_width;
+            let min_height = form.data.min_height;
+            let max_height = form.data.max_height;
             let category = parseInt(form.data.category);
             let tags = form.data.tags;
        
@@ -55,21 +59,37 @@ router.get('/', async function (req, res) {
                 q.where('cost', '<=', max_cost);
             }
 
+            if (min_width) {
+                q.where('width', '>=', min_width);
+            }
+
+            if (max_width) {
+                q.where('width', '<=', max_width);
+            }
+
+            if (min_height) {
+                q.where('height', '>=', min_height);
+            }
+
+            if (max_height) {
+                q.where('height', '<=', max_height);
+            }
+
             // check if cateogry is not 0, not undefined, not null, not empty string
             if (category) {
-                q.where('category_id', '=', category);
+                q.where('media_property_id', '=', category);
             }
 
             // if tags is not empty
             if (tags) {
                 let selectedTags = tags.split(',');
-                q.query('join', 'products_tags', 'products.id', 'product_id')
+                q.query('join', 'posters_tags', 'posters.id', 'poster_id')
                  .where('tag_id', 'in',selectedTags);
             }
 
             // execute the query
             let products = await q.fetch({
-                'withRelated':['category', 'tags']
+                'withRelated': ['MediaProperty', 'Tag']
             });
             res.render('products/index', {
                 'products': products.toJSON(), // convert the results to JSON
