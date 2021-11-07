@@ -16,24 +16,57 @@
 </head>
 
 <body>
-  {{#block "content"}}
-    {{#if success_messages }}
-      {{#each success_messages}}
-        <div class="alert alert-success">
-          {{this}}
-        </div>
-      {{/each}}
-    {{/if}}
+      <div class="container-fluid">
 
-    {{#if error_messages}}
-      {{#each error_messages}}
-        <div class="alert alert-danger">
-          {{this}}
-        </div>
-      {{/each}}
-    {{/if}}
+        <nav class="navbar navbar-expand-sm bg-light">
+          <div class="container-fluid">
+            <!-- Links -->
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/products">Catalog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link 2</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link 3</a>
+              </li>
+            </ul>
+            <div>
+              <div>
+                {{#if user}}
+                  Hi, {{user.username}}
+                  <a href="/cart" class="btn btn-success btn-sm">Cart</a>
+                  <a href="/user/logout" class="btn btn-secondary btn-sm">Logout</a>
+                {{else}}
+                  Welcome, guest. 
+                  <a href="/users/login" class="btn btn-primary btn-sm">Login</a>
+                {{/if}}
+
+              </div>
+          </div>
+        </nav>
+
+<!--Flash Alert Messages goes before the block content-->
+  {{#if success_messages}}
+  <div class="alert alert-success">
+    {{#each success_messages}}
+    {{this}}
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if error_messages}}
+  <div class="alert alert-danger">
+    {{#each error_messages}}
+    {{this}}
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#block "content"}}
   {{/block}}
-  
+
   <!-- Optional JavaScript; choose one of the two! -->
 
   <!-- Option 1: Bootstrap Bundle with Popper -->
