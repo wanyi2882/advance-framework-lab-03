@@ -78,12 +78,14 @@ const landingRoutes = require('./routes/landing')
 const productRoutes = require('./routes/products')
 const userRoutes = require('./routes/user')
 const cloudinaryRoutes = require('./routes/cloudinary')
+const cartRoutes = require('./routes/cart')
 
 async function main() {
   app.use('/', landingRoutes)
   app.use('/products', productRoutes)
   app.use('/user', userRoutes)
   app.use('/cloudinary', cloudinaryRoutes);
+  app.use('/cart', cartRoutes)
 }
 
 main();
