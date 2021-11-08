@@ -17,5 +17,21 @@ async function addItemToCart(userId,productId) {
         return true;   
     }
 }
+// service layer must reflect business rules
 
-module.exports = { addItemToCart, getShoppingCart };
+async function updateQuantityInCart(userId, productId, newQuantity) {
+ if (newQuantity > 0){
+    await cartDataLayer.updateQuantity(userId, productId, newQuantity);
+    return true;
+ } else {
+     return false;
+ }
+}
+
+async function removeFromCart (userId, productId) {
+    //to do: checks
+    await cartDataLayer.removeFromCart(userId, productId)
+    return true;
+}
+
+module.exports = { addItemToCart, getShoppingCart, updateQuantityInCart, removeFromCart };

@@ -39,4 +39,9 @@ async function updateQuantity(userId, productId, newQuantity) {
     await cartItem.save();
 }
 
-module.exports = {createCartItem, getCartItemByUserAndProduct, updateQuantity, getShoppingCartForUser};
+async function removeFromCart(userId, productId){
+    let cartItem = await getCartItemByUserAndProduct(userId, productId);
+    await cartItem.destroy();    
+}
+
+module.exports = {createCartItem, getCartItemByUserAndProduct, updateQuantity, getShoppingCartForUser, removeFromCart};
