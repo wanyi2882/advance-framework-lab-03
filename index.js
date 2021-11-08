@@ -47,11 +47,22 @@ app.use(session({
 }))
 
 // use the csurf middleware
-app.use(csrf());
+// app.use(csrf());
+
+const csrfInstance = csrf()
+app.use(function(req,res,next){
+  if(req.url == "/checkout/process_payment"){
+    next()
+  } else {
+    csrfInstance(req,res,next)
+  }
+})
 
 // global middleware 
 app.use(function(req,res,next){
-  res.locals.csrfToken = req.csrfToken();
+  if(req.csrfToken){
+    res.locals.csrfToken = req.csrfToken();
+  }
   next();
 })
 

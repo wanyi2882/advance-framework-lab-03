@@ -4,7 +4,13 @@ const {
     Tag
 } = require('../models')
 
-async function getProductById(productId) {
+async function getAll(){
+    let allPosters = await Product.fetchAll()
+    return allPosters
+}
+
+//getProductById
+async function findPoster(productId) {
     let product = await Product.where({
         'id': productId
     }).fetch({
@@ -13,7 +19,8 @@ async function getProductById(productId) {
     return product;
 }
 
-async function getAllCategories() {
+//getAllCategories
+async function getMediaProperties() {
     const allCategories = await MediaProperty.fetchAll().map(c => [c.get('id'), c.get('name')]);
     return allCategories;
 }
@@ -23,4 +30,4 @@ async function getAllTags() {
     return allTags;
 }
 
-module.exports = { getProductById, getAllCategories, getAllTags}
+module.exports = { findPoster, getMediaProperties, getAllTags}

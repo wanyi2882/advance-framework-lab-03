@@ -7,8 +7,9 @@ const { Product, MediaProperty, Tag } = require("../models")
 // import in the Forms
 const { bootstrapField, createProductForm, createSearchForm } = require('../forms');
 
+const { getMediaProperties } = require('../dal/products')
 router.get('/', async function (req, res) {
-    const allCategories = await MediaProperty.fetchAll().map(c => [c.get('id'), c.get('name')]);
+    let allCategories = await getMediaProperties()
     allCategories.unshift([0, 'All categories']);
    
     const allTags = await Tag.fetchAll().map(t => [t.get('id'), t.get('name')]);
@@ -101,7 +102,7 @@ router.get('/', async function (req, res) {
         'error': async(form) =>{
              // the model represents the entire table
              let products = await Product.collection().fetch({
-                'withRelated': ['category', 'tags']
+                'withRelated': ['MediaProperty', 'Tag']
             });
 
             res.render('products/index', {
@@ -115,7 +116,7 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/add', async (req, res) => {
-    const media_properties = await MediaProperty.fetchAll().map(m => [m.get('id'), m.get('name')]);
+    const media_properties = await getMediaProperties()
 
     const allTags = await Tag.fetchAll().map(tag => [tag.get('id'), tag.get('name')]);
 
@@ -129,7 +130,7 @@ router.get('/add', async (req, res) => {
 });
 
 router.post('/add', async (req, res) => {
-    const media_properties = await MediaProperty.fetchAll().map(m => [m.get('id'), m.get('name')]);
+    const media_properties = await getMediaProperties()
 
     const allTags = await Tag.fetchAll().map(tag => [tag.get('id'), tag.get('name')]);
 
@@ -179,9 +180,7 @@ router.get('/:product_id/update', async (req, res) => {
     const allTags = await Tag.fetchAll().map(tag => [tag.get('id'), tag.get('name')]);
 
     // fetch all the categories
-    const media_properties = await MediaProperty.fetchAll().map((media_property) => {
-        return [media_property.get('id'), media_property.get('name')];
-    })
+    const media_properties = await getMediaProperties()
 
     const productForm = createProductForm(media_properties, allTags);
 
@@ -221,9 +220,7 @@ router.post('/:product_id/update', async (req, res) => {
     })
 
     // fetch all the categories
-    const media_properties = await MediaProperty.fetchAll().map((media_property) => {
-        return [media_property.get('id'), media_property.get('name')];
-    })
+    const media_properties = await getMediaProperties()
 
     const allTags = await Tag.fetchAll().map(t => [t.get('id'), t.get('name')]);
 

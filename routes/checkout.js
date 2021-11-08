@@ -40,8 +40,8 @@ router.get('/', async function(req,res){
    let payment = {
        'payment_method_types': ['card'],
        'line_items':  allLineItems,
-       'success_url': 'https://www.google.com',
-       'cancel_url': 'https://www.yahoo.com',
+       'success_url': process.env.STRIPE_SUCCESS_URL,
+       'cancel_url': process.env.STRIPE_CANCEL_URL,
        'metadata': {
            'orders': metadataJSON
        }
@@ -55,6 +55,46 @@ router.get('/', async function(req,res){
         'sessionId' : stripeSession.id,
         'publishableKey': process.env.STRIPE_PUBLISHABLE_KEY
     })
+})
+
+// post route for payment success
+// this called by Stripe not internally
+router.post('/process_payment', express.raw({type: 'application/json'}), function(req,res){
+    let payload = req.body
+
+    let endpoint_secret = process.env.STRIPE_ENDPOINT_SECRET
+
+    // extract the signature header
+    let sigHeader = req.headers['stripe-signature']
+
+    // verify that the signature is actually from stripe
+    let event;
+    try {
+        event = Stripe.webhooks.constructEvent(payload, sigHeader, endpoint_secret)
+        if(event.type == "checkout.session.completed"){
+            let stripeSession = event.data.object
+            console.log(stripeSession)
+            let metadata = JSON.parse(stripeSession.metadata.orders);
+            console.log(metadata);
+            res.send({
+                'received': true
+            })
+        }
+    } catch(e){
+        res.send({
+            'error': e.message
+        })
+        console.log(e.message)
+    }
+})
+
+
+router.get('/success', function(req,res){
+    res.send("Thank your order. Your order has been processed");
+})
+
+router.get('/cancel', function(req,res){
+    res.send("Your order has failed or has been cancelled");
 })
 
 module.exports = router;
