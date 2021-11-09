@@ -4,9 +4,8 @@ const {
     Tag
 } = require('../models')
 
-async function getAll(){
-    let allPosters = await Product.fetchAll()
-    return allPosters
+async function getAllProducts(){
+    return await Product.fetchAll()
 }
 
 //getProductById
@@ -30,4 +29,4 @@ async function getAllTags() {
     return allTags;
 }
 
-module.exports = { findPoster, getMediaProperties, getAllTags}
+module.exports = { findPoster, getMediaProperties, getAllTags, getAllProducts }

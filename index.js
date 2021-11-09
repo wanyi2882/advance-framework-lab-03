@@ -51,9 +51,12 @@ app.use(session({
 
 const csrfInstance = csrf()
 app.use(function(req,res,next){
-  if(req.url == "/checkout/process_payment"){
+  if(req.url == "/checkout/process_payment" || 
+  req.url.slice(0,5) == '/api/'){
+    // don't perform csrf checks
     next()
   } else {
+    // if it is any other routes, then perform csrf checks
     csrfInstance(req,res,next)
   }
 })
@@ -92,7 +95,15 @@ const cloudinaryRoutes = require('./routes/cloudinary')
 const cartRoutes = require('./routes/cart')
 const checkoutRoutes = require('./routes/checkout')
 
+const api = {
+  'products': require('./routes/api/products'),
+  'users': require('./routes/api/users')
+}
+
 async function main() {
+  // first arg - the prefix
+  // second arg - custom routes
+
   app.use('/', landingRoutes)
   app.use('/products', productRoutes)
   app.use('/user', userRoutes)
@@ -100,6 +111,10 @@ async function main() {
   app.use('/cart', cartRoutes)
   app.use('/checkout', checkoutRoutes)
 }
+
+// Register the API routes
+app.use('/api/products', express.json(), api.products)
+app.use('/api/users', express.json(), api.users);
 
 main();
 
